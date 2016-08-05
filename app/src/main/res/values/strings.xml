@@ -7,4 +7,7 @@
     <string name="thursday">四</string>
     <string name="friday">五</string>
     <string name="saturday">六</string>
+    <string name="data1">已完成天数/目标天数: </string>
+    <string name="data2">目前连续天数/最大连续天数: </string>
+    <string name="data3">/</string>
 </resources>

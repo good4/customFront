@@ -57,8 +57,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_margin="16dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/rectangle"
         android:layout_centerInParent="true">
         <Button
@@ -76,7 +79,7 @@
             android:background="@drawable/share"
             android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="13dp"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:text="分享习惯"
@@ -85,6 +88,7 @@
     </RelativeLayout>
 
 <!--calendar-->
+    <!--外边框-->
     <RelativeLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -93,8 +97,8 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/rectangle"
         android:layout_centerInParent="true"
-        tools:context="com.xp.calendar.MainActivity">
-
+        tools:context="com.example.shizhan.customfront.show_custom">
+        <!--month-->
         <RelativeLayout
             android:id="@+id/head_layout"
             android:layout_width="match_parent"
@@ -109,14 +113,16 @@
                 android:layout_centerVertical="true"
                 android:textSize="15sp"/>
         </RelativeLayout>
-
+        <!--week-->
         <LinearLayout
             android:id="@+id/week_layout"
             android:layout_below="@+id/head_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:orientation="vertical">
 
             <TableLayout
@@ -127,8 +133,15 @@
 
                     <TextView
                         style="@style/dateStyle"
+                        android:text="@string/sunday"
+                        android:textColor="@color/font_default_color"/>
+
+                    <TextView
+                        style="@style/dateStyle"
                         android:text="@string/monday"
                         android:textColor="@color/font_default_color"/>
+
+
 
                     <TextView
                         style="@style/dateStyle"
@@ -155,27 +168,23 @@
                         android:text="@string/saturday"
                         android:textColor="@color/font_default_color"/>
 
-                    <TextView
-                        style="@style/dateStyle"
-                        android:text="@string/sunday"
-                        android:textColor="@color/font_default_color"/>
+
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
 
         <RelativeLayout
             android:layout_below="@+id/week_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:orientation="vertical">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_calendar"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_marginTop="10dp"/>
 
             <LinearLayout
@@ -184,28 +193,61 @@
                 android:layout_height="10dp"
                 android:layout_below="@+id/vp_calendar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="0dp"
                 android:orientation="horizontal"/>
-
 
         </RelativeLayout>
     </RelativeLayout>
+    <!--统计数据-->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:background="@drawable/share"
+        >
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/share"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:text="已完成天数/目标天数："/>
+            style="@style/dataStyle"
+            android:text="@string/data1"
+            />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/share"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:text="目前连续天数/最大连续天数："/>
+            style="@style/dataStyle"
+            android:id="@+id/show_insist_day"/>
+        <TextView
+            style="@style/dataStyle"
+            android:text="@string/data3"/>
+        <TextView
+            style="@style/dataStyle"
+            android:id="@+id/show_target_day"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        android:background="@drawable/share"
+        >
+        <TextView
+            style="@style/dataStyle"
+            android:text="@string/data2"
+            />
+
+        <TextView
+            style="@style/dataStyle"
+            android:id="@+id/show_current_insist_day"/>
+        <TextView
+            style="@style/dataStyle"
+            android:text="@string/data3"/>
+        <TextView
+            style="@style/dataStyle"
+            android:id="@+id/show_max_insist_day"/>
     </LinearLayout>
 </LinearLayout>
+
+

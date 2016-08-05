@@ -101,14 +101,14 @@ public class DateUtil {
     public static int getWeekDayFromDate(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getDateFromString(year, month));
-        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 2;//周一第一天
-        if (week_index < 0) {
-            week_index = 6;
-        }
-//        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;//周日第一天
+//        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 2;//周一第一天
 //        if (week_index < 0) {
-//            week_index = 0;
-//        }
+//            week_index = 6;
+//       }
+       int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;//周日第一天
+        if (week_index < 0) {
+           week_index = 0;
+        }
         return week_index;
     }
 

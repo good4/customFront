@@ -47,8 +47,6 @@ public class CalendarCard extends View {
 
     /**
      * 单元格点击的回调接口
-     *
-     * @author wuwenjie
      */
     public interface OnCellClickListener {
         void clickDate(CustomDate date); // 回调点击的日期
@@ -92,8 +90,8 @@ public class CalendarCard extends View {
         mCirclePaintKong.setStyle(Paint.Style.STROKE);
         mCirclePaintKong.setStrokeWidth(3);
         mDianPaint.setStyle(Paint.Style.FILL);
-        mCirclePaint.setColor(Color.parseColor("#ff7800")); // 红色圆形
-        mCirclePaintKong.setColor(Color.parseColor("#ff7800")); // 红色圆形
+        mCirclePaint.setColor(Color.parseColor("#d71345")); // 红色圆形
+        mCirclePaintKong.setColor(Color.parseColor("#d71345")); // 红色圆形
         mDianPaint.setColor(Color.GRAY); // 灰色圆点
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         initDate();
@@ -319,16 +317,16 @@ public class CalendarCard extends View {
         public void drawSelf(Canvas canvas) {
             switch (state) {
                 case CURRENT_MONTH_DAY: //当月
-                    mTextPaint.setColor(Color.parseColor("#484848"));
+                    mTextPaint.setColor(Color.parseColor("#130c0e"));
                     break;
                 case TODAY: // 今天
-                    mTextPaint.setColor(Color.parseColor("#ff7800"));
+                    mTextPaint.setColor(Color.parseColor("#d71345"));
                     canvas.drawCircle((float) (mW * (i + 0.51)),
                             (float) ((j + 0.38) * mH), mCellSpace * 5 / 13,
                             mCirclePaintKong);
                     break;
                 case PITCH_ON_DAY: //有数据的日期
-                    mTextPaint.setColor(Color.parseColor("#fffffe"));
+                    mTextPaint.setColor(Color.parseColor("#ffffff"));
                     canvas.drawCircle((float) (mW * (i + 0.51)),
                             (float) ((j + 0.38) * mH), mCellSpace * 5 / 13,
                             mCirclePaint);
@@ -347,7 +345,7 @@ public class CalendarCard extends View {
     }
 
     /**
-     * @author wuwenjie 单元格的状态 当前月日期，过去的月的日期，下个月的日期
+     *元格的状态 当前月日期，过去的月的日期，下个月的日期
      */
     enum State {
         TODAY, NO_CURRENT_MONTH_DAY, CURRENT_MONTH_DAY, PITCH_ON_DAY

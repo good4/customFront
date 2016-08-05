@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="theme">#d71345</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="bg_gray">#cccc</color>
+    <color name="bg_gray">#cccccc</color>
     <color name="div_white">#E5E5E5</color>
     <color name="font_default_color">#717171</color>
 </resources>
