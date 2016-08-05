@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("in the AddCustomAdapter","in getView");
         ViewHolder holder = null;
         if(convertView == null){
             convertView = LayoutInflater.from(cContext).inflate(R.layout.list_item_card,parent,false);
@@ -60,20 +62,24 @@ public class CustomAdapter extends BaseAdapter {
             holder.cName = (TextView) convertView.findViewById(R.id.custom_name);
             holder.cInsist_day=(TextView)convertView.findViewById(R.id.insist_day);
             holder.alarm_time=(TextView)convertView.findViewById(R.id.alarm_time);
+            holder.recorded=(ImageView)convertView.findViewById(R.id.recorded);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();//将Holder存储到convertView中,不用每次调findViewById
         }
-//        Iterator iter = map.entrySet().iterator();
-//        while (iter.hasNext()) {
-//            Map.Entry entry = (Map.Entry) iter.next();
-//            Object key = entry.getKey();
-//            Object val = entry.getValue();
-//        }
         holder.cIcon.setImageBitmap(images.get(position));
         holder.cName.setText(cData.get(position).getCustom_name());
         holder.cInsist_day.setText("已坚持"+cData.get(position).getInsist_day()+"天");
-        holder.alarm_time.setText(" 提醒 "+cData.get(position).getAlarm_time());
+        //比较过时间后判断是否打卡
+        holder.recorded.setImageResource(R.mipmap.check1);
+        Log.d("position"+position,cData.get(position).getAlarm_time());
+        if(cData.get(position).getAlarm_time().equals("不提醒")) {
+            Log.d("tixing",cData.get(position).getAlarm_time());
+            holder.alarm_time.setText("");
+        }
+        else{
+            holder.alarm_time.setText(" 提醒 "+cData.get(position).getAlarm_time());
+        }
         return convertView;
     }
 
@@ -82,6 +88,7 @@ public class CustomAdapter extends BaseAdapter {
         TextView cName;
         TextView cInsist_day;
         TextView alarm_time;
+        ImageView recorded;
     }
 }
 
