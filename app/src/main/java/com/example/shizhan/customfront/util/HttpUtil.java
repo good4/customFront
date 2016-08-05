@@ -60,7 +60,8 @@ public class HttpUtil {
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         // 请求和响应都成功
                         HttpEntity entity = httpResponse.getEntity();
-                        String response = EntityUtils.toString(entity, "utf-8");
+                        
+			String response = EntityUtils.toString(entity, "utf-8");
                         //Gson解析服务器发过来的数据
                         Log.d("data from the server：", response);
 
@@ -123,6 +124,7 @@ public class HttpUtil {
                         listener.onError(e);
                     } else {
                         Log.d("HttpClient_post", "listener null");
+                    }
                     }
                     e.printStackTrace();
                 }

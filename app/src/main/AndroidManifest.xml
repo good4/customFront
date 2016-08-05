@@ -21,10 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- <activity android:name=".MainActivity"></activity> -->
         <activity android:name=".AddActivity" />
         <activity android:name=".CategoryChooseActivity" />
         <activity android:name=".AlarmTimeChooseActivity" />
+
+        <activity android:name=".show_custom"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ThirdActivity"/>
+
     </application>
 
 </manifest>
