@@ -24,6 +24,8 @@ public class Custom {
     private String current_insist_day;
     //用户ID
     private Long user_Id;
+    //是否打卡
+    private boolean isRecorded;
 
 
     public String getCustom_name() {
@@ -103,5 +105,13 @@ public class Custom {
 
     public void setUser_Id(Long user_Id) {
         this.user_Id = user_Id;
+    }
+
+    public boolean isRecorded() {
+        return isRecorded;
+    }
+
+    public void setRecorded(boolean recorded) {
+        isRecorded = recorded;
     }
 }

@@ -83,7 +83,7 @@ public class HttpUtil {
         }).start();
     }
 
-    public static void postRequest(final String address, final Map<String, String> rawParams, final HttpCallbackListener listener) {
+    public static void  postRequest(final String address, final Map<String, String> rawParams, final HttpCallbackListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -147,9 +147,11 @@ public class HttpUtil {
             Log.d("current_insist_day", custom.getCurrent_insist_day());
             Log.d("custom_Id",String.valueOf(custom.getCustom_Id()));
             Log.d("user_Id",String.valueOf(custom.getUser_Id()));
+            Log.d("isRecorded",String.valueOf(custom.isRecorded()));
         }
         return customList;
     }
+
     public static Map convertToMapWithJSON(String response) throws JSONException {
         JSONObject jsonObject = new JSONObject(response);
 

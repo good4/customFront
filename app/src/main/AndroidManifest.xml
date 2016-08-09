@@ -25,6 +25,7 @@
         <activity android:name=".AddActivity" />
         <activity android:name=".CategoryChooseActivity" />
         <activity android:name=".AlarmTimeChooseActivity" />
+        <activity android:name=".CustomSettingActivity"></activity>
     </application>
 
 </manifest>

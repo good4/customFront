@@ -28,9 +28,10 @@ import java.util.Map;
 public class CustomAdapter extends BaseAdapter {
     private Context cContext;
     private List<Custom> cData;
-    private HashMap<Integer,Bitmap> images;
+    private HashMap<String,Bitmap> images;
+    private int pos=-1;
 
-    public CustomAdapter(List<Custom> cData, HashMap<Integer,Bitmap> images,Context cContext) {
+    public CustomAdapter(List<Custom> cData, HashMap<String,Bitmap> images,Context cContext) {
         this.cData = cData;
         this.images=images;
         this.cContext = cContext;
@@ -42,10 +43,15 @@ public class CustomAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Custom getItem(int position) {
+        //pos=position;
+        Custom custom=cData.get(position);
+        //cData.remove(position);
+        return custom;
     }
-
+    public void updateImages(HashMap<String,Bitmap> images){
+        this.images=images;
+    }
     @Override
     public long getItemId(int position) {
         return position;
@@ -67,11 +73,25 @@ public class CustomAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) convertView.getTag();//将Holder存储到convertView中,不用每次调findViewById
         }
-        holder.cIcon.setImageBitmap(images.get(position));
+//        //图标加载
+//        if(images.get(cData.get(position).getCategory())==null)
+//            holder.cIcon.setImageResource(R.mipmap.photo);
+//        else
+            holder.cIcon.setImageBitmap(images.get(cData.get(position).getCategory()));
         holder.cName.setText(cData.get(position).getCustom_name());
         holder.cInsist_day.setText("已坚持"+cData.get(position).getInsist_day()+"天");
         //比较过时间后判断是否打卡
-        holder.recorded.setImageResource(R.mipmap.check1);
+        if(cData.get(position).isRecorded()==true)
+        {
+            Log.d(cData.get(position).getCustom_name(),"recorded");
+            holder.recorded.setImageResource(R.mipmap.check1);
+            holder.recorded.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            Log.d(cData.get(position).getCustom_name(),"not recorded............");
+            holder.recorded.setVisibility(View.GONE);
+        }
         Log.d("position"+position,cData.get(position).getAlarm_time());
         if(cData.get(position).getAlarm_time().equals("不提醒")) {
             Log.d("tixing",cData.get(position).getAlarm_time());

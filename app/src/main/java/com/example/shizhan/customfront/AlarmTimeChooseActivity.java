@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
@@ -21,13 +22,14 @@ public class AlarmTimeChooseActivity extends AppCompatActivity {
     private WheelView hourWheelView, minuteWheelView;
     private String hour="12",minute="00",time="";
     private View layout;
+    private TextView custom_name;
     private int checked=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_time_choose);
         Toolbar toolbar = (Toolbar) findViewById(R.id.add_toolbar);
-        //设置返回键
+        //设置返回键,返回设置的提醒时间给CustomsettingActivity
         toolbar.setNavigationIcon(R.mipmap.back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +42,11 @@ public class AlarmTimeChooseActivity extends AppCompatActivity {
                 finish();//销毁当前活动
             }
         });
+        //得到传过来的习惯名并显示
+        Intent intent=getIntent();
+        custom_name=(TextView)findViewById(R.id.custom_show_name);
+        custom_name.setText(intent.getStringExtra("custom_name"));
+
         initWheel();
         layout=findViewById(R.id.show_alarm);
         ToggleButton mTogBtn = (ToggleButton) findViewById(R.id.mTogBtn); // 获取到控件

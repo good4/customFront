@@ -27,13 +27,14 @@ import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
-    private static final String baseUrl="http://192.168.1.103:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
+    private static final String baseUrl="http://192.168.1.101:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
     public static final String TAG = "AddActivity";
     private List<AddCustom> addData;
     private AddCustomAdapter addCustomAdapter;
@@ -46,8 +47,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private ImageView clear_day;
     private Toolbar toolbar;
     private Handler handler;
+    private Intent intent;
 
-    private Map<String,String> new_custom;
+    //private Map<String,String> new_custom;
     private static final int AlarmTimeChoose=0;
     private static final int CategoryChoose=1;
     private static final int SHOW_EXIST=0;
@@ -58,7 +60,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     //目标坚持天数
     private String target_day;
     //提醒时间
-    private String alarm_time="12:00";
+    private String alarm_time="请设置提醒时间";
     //习惯分类
     private String category="效率";
     //返回结果
@@ -81,6 +83,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         }
         Log.i(TAG,"onCreate");
 
+        intent=new Intent();
         context=AddActivity.this;
         listView=(ListView)findViewById(R.id.add_list_view);
         create_custom=(Button)findViewById(R.id.create_custom);
@@ -93,9 +96,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //可以只让
-                Intent intent=new Intent(AddActivity.this,MainActivity.class);
-                startActivity(intent);
+                intent.putExtra("AddActivity",1);
+                setResult(0,intent);
                 finish();
             }
         });
@@ -112,6 +114,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 switch (position){
                     case 0:
                         Intent intentAlarmTime=new Intent(context, AlarmTimeChooseActivity.class);
+                        intentAlarmTime.putExtra("custom_name",name.getText().toString());
                         startActivityForResult(intentAlarmTime,AlarmTimeChoose);
                         break;
                     case 1:
@@ -231,9 +234,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //使用这个方法会让MainActivity再次create
-        Intent intent=new Intent(AddActivity.this,MainActivity.class);
-        startActivity(intent);
+        intent.putExtra("AddActivity",1);
+        setResult(0,intent);
         finish();
     }
     /*
@@ -246,63 +248,57 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 //将四个值放在一个Map中，
                 userId=String.valueOf(MainFragment.userId);
                 Log.d("user_id",userId);
-                new_custom=new HashMap<String, String>();
-                new_custom.put("user_id",userId);
-                new_custom.put("custom_name",custom_name);
-                new_custom.put("alarm_time",alarm_time);
-                new_custom.put("target_day",target_day);
-                new_custom.put("category",category);
-                //查询当前用户是否已经存在该习惯
-                try {
-                    parameter="custom?userName=" + URLEncoder.encode(userName,"utf-8")+"&customName="+ URLEncoder.encode(custom_name,"utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                /*
-                * 查询是否已经存在这条习惯
-                * */
-                HttpUtil.sendRequestWithHttpClient(baseUrl+parameter,new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response){
-                        try {
-                            Map<String,String> re=HttpUtil.convertToMapWithJSON(response);
-                            String result=re.get("isExist");
-                            Log.d("result",result);
-                            //该习惯已经存在
-                            if(result.equals("custom exist")){
-                                //Toast
-                                Log.d("isExist",re.get("isExist"));
-                                Message message=new Message();
-                                message.what=SHOW_EXIST;
-                                handler.sendMessage(message);
+                custom_name=name.getText().toString();
+                target_day=day.getText().toString();
+                //如果习惯名和坚持天数为空
+                if(custom_name.equals("")||target_day.equals(""))
+                    Toast.makeText(context,"习惯名和坚持天数不能为空！",Toast.LENGTH_SHORT).show();
+                //如果未设置提醒与否
+                else if(alarm_time.equals("请设置提醒时间"))
+                    Toast.makeText(context,"请设置提醒时间！",Toast.LENGTH_SHORT).show();
+                else{
+                    //查询当前用户是否已经存在该习惯
+                    try {
+                        parameter="custom?userName=" + URLEncoder.encode(userName,"utf-8")+"&customName="+ URLEncoder.encode(custom_name,"utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+
+                    HttpUtil.sendRequestWithHttpClient(baseUrl+parameter,new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response){
+                            try {
+                                Map<String,String> re=HttpUtil.convertToMapWithJSON(response);
+                                String result=re.get("isExist");
+                                Log.d("result",result);
+                                //该习惯已经存在
+                                if(result.equals("custom exist")){
+                                    //Toast
+                                    Log.d("isExist",re.get("isExist"));
+                                    Message message=new Message();
+                                    message.what=SHOW_EXIST;
+                                    handler.sendMessage(message);
+                                }
+                                else{
+                                    //保存数据传送给Main Activity 先在页面上显示
+                                    intent.putExtra("user_id",userId);
+                                    intent.putExtra("custom_name",custom_name);
+                                    intent.putExtra("alarm_time",alarm_time);
+                                    intent.putExtra("target_day",target_day);
+                                    intent.putExtra("category",category);
+                                    setResult(1,intent);
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else{
-                                HttpUtil.postRequest(baseUrl, new_custom, new HttpCallbackListener() {
-                                    @Override
-                                    public void onFinish(String response) {
-                                        if(response.equals("success"))
-                                        {
-                                            Log.d("....","success");
-                                            Message message=new Message();
-                                            message.what=CREATE_CUSTOM;
-                                            handler.sendMessage(message);
-                                        }
-                                    }
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Log.d("AddActivity","请求服务器失败！");
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                    @Override
-                    public void onError(Exception e) {
-                        Log.d("AddActivity","请求服务器失败！");
-                    }
-                });
+                        @Override
+                        public void onError(Exception e) {
+                            Log.d("AddActivity","请求服务器失败！");
+                        }
+                    });
+                }
                 break;
             case R.id.clear_name:
                 name.setText("");

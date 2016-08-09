@@ -1,19 +1,16 @@
 package com.example.shizhan.customfront;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.example.shizhan.customfront.model.Custom;
+import com.example.shizhan.customfront.util.Callback;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
     public static final String TAG = "MainActivity";
@@ -24,9 +21,18 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     //Fragment Object
     private MainFragment main_fg;
     //private AddFragment add_fg;
-    //定义其它碎片，如添加和个人中心
+    //定义其它碎片，如个人中心
     private FragmentManager fManager;
+    private static final int MainActivity=1;
+    private FragmentTransaction fTransaction;
 
+    //test
+    private String user_id;
+    private String custom_name;
+    private String alarm_time;
+    private String target_day;
+    private String category;
+    private Custom custom=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +41,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//API版本21
         setContentView(R.layout.activity_main);
         Log.i(TAG,"onCreate");
+
         fManager = getFragmentManager();
+
+
         rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);
         rg_tab_bar.setOnCheckedChangeListener(this);
         //获取第一个单选按钮，并设置其为选中状态
         rb_channel = (RadioButton) findViewById(R.id.rb_custom);
         rb_channel.setChecked(true);
+
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fTransaction= fManager.beginTransaction();//必须放在这个方法内不能放在外面
         hideAllFragment(fTransaction);
         switch (checkedId){
             case R.id.rb_custom:
@@ -60,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 //                开启新的活动
                 Log.d("in add","in add");
                 Intent intent=new Intent(MainActivity.this,AddActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,MainActivity);
                 break;
             case R.id.rb_my:
 //                if(fg3 == null){
@@ -90,11 +100,68 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 //        if(fg4 != null)fragmentTransaction.hide(fg4);
     }
 
-@Override
-protected void onStart() {
-    super.onStart();
-    Log.i(TAG, "onStart");
-}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //从addAcivity中的标题栏和物理返回键返回
+            if(resultCode==0){
+                //底部导航栏改变选中状态
+                rb_channel = (RadioButton) findViewById(R.id.rb_custom);
+                rb_channel.setChecked(true);
+                fTransaction=fManager.beginTransaction();
+                hideAllFragment(fTransaction);
+                if(main_fg == null){
+                    main_fg = new MainFragment();
+                    //main_fg.setArguments(bundle);
+                    fTransaction.add(R.id.ly_content,main_fg);
+                }else{
+                    //main_fg.setArguments(bundle);
+                    fTransaction.show(main_fg);
+                }
+                fTransaction.commit();
+            }
+            else if(resultCode==1){
+                // 把更新的数据传给碎片
+                user_id=data.getStringExtra("user_id");
+                custom_name=data.getStringExtra("custom_name");
+                alarm_time=data.getStringExtra("alarm_time");
+                target_day=data.getStringExtra("target_day");
+                category=data.getStringExtra("category");
+
+                custom=new Custom();
+                custom.setTarget_day(target_day);
+                custom.setAlarm_time(alarm_time);
+                custom.setCategory(category);
+                custom.setCustom_name(custom_name);
+                custom.setUser_Id(Long.valueOf(user_id));
+
+                Log.i("MainActivity","回调.................");
+                //底部导航栏改变选中状态
+                rb_channel = (RadioButton) findViewById(R.id.rb_custom);
+                rb_channel.setChecked(true);
+                fTransaction=fManager.beginTransaction();//每进行一次fragment的加载都要重新运行一次fManager.beginTransaction()
+                hideAllFragment(fTransaction);
+                if(main_fg == null){
+                    main_fg = new MainFragment();
+                   // main_fg.setArguments(bundle);这种方法只在fragment创建时有用
+                    fTransaction.add(R.id.ly_content,main_fg);
+                }else{
+                    fTransaction.show(main_fg);
+                }
+                fTransaction.commit();
+            }
+
+    }
+
+    public void getData(Callback callback){
+        callback.getResult(custom);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart");
+    }
     @Override
     protected void onResume() {
         super.onResume();
