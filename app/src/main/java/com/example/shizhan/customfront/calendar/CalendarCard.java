@@ -132,13 +132,13 @@ public class CalendarCard extends View {
                     monthClick = mShowDate.month;
                     dayClick = day;
                     rows[j].cells[i] = new Cell(new CustomDate(yearClick, monthClick, dayClick), State.CURRENT_MONTH_DAY, have, i, j);
-                    for (int n = 0; n < listDay.size(); n++) {
+                   /* for (int n = 0; n < listDay.size(); n++) {
                         if (mShowDate.getYear() == listDay.get(n).getYear() && mShowDate.getMonth() == listDay.get(n).getMonth() && day == listDay.get(n).getDay()) {
                             rows[j].cells[i] = new Cell(new CustomDate(yearClick, monthClick, dayClick), State.PITCH_ON_DAY, have, i, j);
                             break;
                         }
                     }
-
+*/
                     try {
                         String time = year + "-" + month + "-" + monthDay;
                         String timeNow = yearClick + "-" + monthClick + "-" + dayClick;
@@ -152,6 +152,14 @@ public class CalendarCard extends View {
                     } catch (ParseException e) {
 
                     }
+
+                    for (int n = 0; n < listDay.size(); n++) {
+                        if (mShowDate.getYear() == listDay.get(n).getYear() && mShowDate.getMonth() == listDay.get(n).getMonth() && day == listDay.get(n).getDay()) {
+                            rows[j].cells[i] = new Cell(new CustomDate(yearClick, monthClick, dayClick), State.PITCH_ON_DAY, have, i, j);
+                            break;
+                        }
+                    }
+
                 } else if (position < firstDayWeek) {//过去一个月
                     yearClick = mShowDate.year;
                     monthClick = mShowDate.month - 1;

@@ -1,42 +1,26 @@
 package com.example.shizhan.customfront.util;
 
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
+import java.util.Date;
 
-import com.alibaba.sdk.android.oss.OSS;
-import com.alibaba.sdk.android.oss.OSSClient;
-import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.example.shizhan.customfront.model.Custom;
+import com.example.shizhan.customfront.model.RecordDate;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,13 +41,14 @@ public class HttpUtil {
                 try {
                     HttpGet httpGet = new HttpGet(address);
                     HttpResponse httpResponse = httpClient.execute(httpGet);
+                    Log.d("HttpUtil","response1");
                     if (httpResponse.getStatusLine().getStatusCode() == 200) {
                         // 请求和响应都成功
                         HttpEntity entity = httpResponse.getEntity();
-                        
-			String response = EntityUtils.toString(entity, "utf-8");
+			            String response = EntityUtils.toString(entity, "utf-8");
                         //Gson解析服务器发过来的数据
-                        Log.d("data from the server：", response);
+                        Log.d("HttpUtil","response2");
+//                        Log.d("data from the server：", response);
 
                         if (listener != null) {
                             //回调onFinish()方法
@@ -120,12 +105,12 @@ public class HttpUtil {
                 } catch (Exception e) {
                     if (listener != null) {
                         // 回调onError()方法
-                        Log.d("HttpClient-post", "in the catch");
+                        Log.d("HttpClient-post", "in the catch"+e.getMessage());
                         listener.onError(e);
                     } else {
                         Log.d("HttpClient_post", "listener null");
                     }
-                    }
+
                     e.printStackTrace();
                 }
             }
@@ -135,6 +120,14 @@ public class HttpUtil {
     /*
     * 将JSON格式数据转化为普通数据
     * */
+    public static List<RecordDate> recordsJSONwithGson(String response){
+        Gson gson = new Gson();
+        List<RecordDate> dateList = gson.fromJson(response, new TypeToken<List<RecordDate>>(){}.getType());
+        for(RecordDate recorddate : dateList){
+            Log.d("record_date", recorddate.getDate());
+        }
+        return dateList;
+    }
     public static List<Custom> parseJSONwithGson(String response) {
         Gson gson = new Gson();
         List<Custom> customList = gson.fromJson(response, new TypeToken<List<Custom>>() {}.getType());
@@ -170,6 +163,5 @@ public class HttpUtil {
         }
         return result;
     }
-
 }
 

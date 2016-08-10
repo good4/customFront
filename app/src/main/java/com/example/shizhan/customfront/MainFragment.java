@@ -59,7 +59,7 @@ public class MainFragment extends Fragment {
     private  String userName="小王";
     //通过查询得到userID,share
     public static Long userId;
-    private static final String baseUrl="http://192.168.1.103:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
+    private static final String baseUrl="http://192.168.1.100:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
     private static String parameter="";
 
     //OSS init

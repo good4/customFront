@@ -7,4 +7,6 @@
     <color name="colorWhite">#ffffff</color>
     <color name="div_white">#E5E5E5</color>
     <color name="font_default_color">#717171</color>
+    <color name="colorBlack">#1D1D1C</color>
+    <color name="bg_gray">#cccc</color>
 </resources>

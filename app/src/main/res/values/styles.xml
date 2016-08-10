@@ -30,6 +30,7 @@
         <item name="spinBars">false</item>
         <!--設定 drawer arrow 的顏色-->
         <item name="color">@color/colorWhite</item>
+    </style>
 <!--日历style-->
 <style name="dateStyle">
     <item name="android:layout_width">match_parent</item>
