@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -43,6 +44,8 @@
         android:name=".CustomManagement.MyApplication">
         <!-- For test only 测试的主程序-->
         <activity android:name=".MainActivity">
+        android:hardwareAccelerated="true">
+        <activity android:name=".LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -171,4 +174,28 @@
     </application>
 
 
+         <activity android:name=".MainActivity"></activity>
+
+       <!-- <activity android:name=".LogoActivity"></activity>-->
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ForgetpActivity"></activity>
+        <activity  android:name="com.mob.tools.MobUIShell"
+                    android:configChanges="keyboardHidden|orientation|screenSize"
+                    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                    android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

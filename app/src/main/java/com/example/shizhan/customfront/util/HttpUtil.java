@@ -151,6 +151,20 @@ public class HttpUtil {
         }
         return customList;
     }
+    public static void getRequest(final String address, final CallbackListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(address);
+                    HttpResponse httpResponse = httpClient.execute(httpGet);
+                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                        // 请求和响应都成功
+                        HttpEntity entity = httpResponse.getEntity();
+                        String response = EntityUtils.toString(entity,"utf-8");
+                        //Gson解析服务器发过来的数据
+                        Log.d("data from the server：",response);
 
     public static Map convertToMapWithJSON(String response) throws JSONException {
         JSONObject jsonObject = new JSONObject(response);

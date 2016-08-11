@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private static final int MSG_SET_ALIAS = 1001;
     private static final int MSG_SET_TAGS = 1002;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -32,6 +32,7 @@ public class AddCustomAdapter extends BaseAdapter {
         this.pos=pos;
     }
 
+
     @Override
     public int getCount() {
         return addData.size();
