@@ -28,6 +28,7 @@ import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvide
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 import com.alibaba.sdk.android.oss.model.GetObjectResult;
+import com.example.shizhan.customfront.MainActivity;
 import com.example.shizhan.customfront.R;
 import com.example.shizhan.customfront.adapter.CustomAdapter;
 import com.example.shizhan.customfront.model.Custom;

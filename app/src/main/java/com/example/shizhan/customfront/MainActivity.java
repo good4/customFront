@@ -1,4 +1,4 @@
-package com.example.shizhan.customfront.CustomManagement;
+package com.example.shizhan.customfront;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -10,7 +10,8 @@ import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.example.shizhan.customfront.R;
+import com.example.shizhan.customfront.CustomManagement.AddActivity;
+import com.example.shizhan.customfront.CustomManagement.MainFragment;
 import com.example.shizhan.customfront.model.Custom;
 import com.example.shizhan.customfront.util.Callback;
 import com.example.shizhan.customfront.util.ExampleUtil;

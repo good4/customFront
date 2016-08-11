@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.shizhan.customfront.MainActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -42,7 +42,7 @@
         android:theme="@style/AppTheme"
         android:name=".CustomManagement.MyApplication">
         <!-- For test only 测试的主程序-->
-        <activity android:name=".CustomManagement.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
