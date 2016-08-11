@@ -82,6 +82,45 @@ public class HttpUtil {
         }
         return customList;
     }
+    public static void getRequest(final String address, final CallbackListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(address);
+                    HttpResponse httpResponse = httpClient.execute(httpGet);
+                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                        // 请求和响应都成功
+                        HttpEntity entity = httpResponse.getEntity();
+                        String response = EntityUtils.toString(entity,"utf-8");
+                        //Gson解析服务器发过来的数据
+                        Log.d("data from the server：",response);
 
+                        //Log.d("show response",response);
+//                        Message message = new Message();
+//                        message.what = SHOW_RESPONSE;
+//                        // 将服务器返回的结果存放到Message中
+//                        message.obj = response.toString();
+//                        handler.sendMessage(message);
+                        if (listener != null) {
+                            //回调onFinish()方法
+                            listener.onFinish(response);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (listener != null) {
+                        // 回调onError()方法
+                        Log.d("HttpClient","in the catch");
+                        listener.onError(e);
+                    }
+                    else {
+                        Log.d("HttpClient","listener null");
+                    }
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }
 
