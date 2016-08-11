@@ -140,7 +140,7 @@ public class HttpUtil {
             Log.d("custom_name", custom.getCustom_name());
             Log.d("alarm_time", custom.getAlarm_time());
             Log.d("insist_day", custom.getInsist_day());
-            Log.d("image_url", custom.getImage_url());
+            //Log.d("image_url", custom.getImage_url());
             Log.d("category", custom.getCategory());
             Log.d("target_day", custom.getTarget_day());
             Log.d("max_insist_day", custom.getMax_insist_day());

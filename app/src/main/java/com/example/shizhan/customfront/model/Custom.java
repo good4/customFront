@@ -12,8 +12,8 @@ public class Custom {
     private String alarm_time;
     //当前完成天数
     private String insist_day;
-    //分类图片地址
-    private String image_url;
+//    //分类图片地址
+//    private String image_url;
     //习惯分类
     private String category;
     //目标天数
@@ -25,7 +25,7 @@ public class Custom {
     //用户ID
     private Long user_Id;
     //是否打卡
-    private boolean isRecorded;
+    private int isRecorded;
 
 
     public String getCustom_name() {
@@ -52,13 +52,6 @@ public class Custom {
         this.insist_day = insist_day;
     }
 
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
     public String getCategory() {
         return category;
     }
@@ -107,11 +100,11 @@ public class Custom {
         this.user_Id = user_Id;
     }
 
-    public boolean isRecorded() {
+    public int isRecorded() {
         return isRecorded;
     }
 
-    public void setRecorded(boolean recorded) {
+    public void setRecorded(int recorded) {
         isRecorded = recorded;
     }
 }

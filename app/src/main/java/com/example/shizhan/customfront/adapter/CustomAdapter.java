@@ -1,9 +1,7 @@
 package com.example.shizhan.customfront.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.shizhan.customfront.MainActivity;
 import com.example.shizhan.customfront.R;
 import com.example.shizhan.customfront.model.Custom;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by shizhan on 16/7/25.
@@ -81,7 +75,7 @@ public class CustomAdapter extends BaseAdapter {
         holder.cName.setText(cData.get(position).getCustom_name());
         holder.cInsist_day.setText("已坚持"+cData.get(position).getInsist_day()+"天");
         //比较过时间后判断是否打卡
-        if(cData.get(position).isRecorded()==true)
+        if(cData.get(position).isRecorded()==1)
         {
             Log.d(cData.get(position).getCustom_name(),"recorded");
             holder.recorded.setImageResource(R.mipmap.check1);
