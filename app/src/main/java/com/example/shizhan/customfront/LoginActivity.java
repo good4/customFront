@@ -111,6 +111,13 @@ private void doLogin(final String username, final String password) {
                         user.setName(username);
                         user.setPassword(password);
                         AppInfo.setUser(user); Toast.makeText(LoginActivity.this,"您已登录成功",Toast.LENGTH_LONG).show();
+                        //传用户名给MainActivity
+                        Log.i("user_name",username);
+                        Intent intent = new Intent();
+                        intent.setClass(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("user_name",username);
+                        startActivity(intent);
+                        finish();
                     }
 
 

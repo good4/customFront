@@ -1,13 +1,7 @@
 package com.example.shizhan.customfront.util;
 
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.alibaba.sdk.android.oss.OSS;
-import com.alibaba.sdk.android.oss.OSSClient;
-import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
 import com.example.shizhan.customfront.model.Custom;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,28 +9,16 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -151,20 +133,6 @@ public class HttpUtil {
         }
         return customList;
     }
-    public static void getRequest(final String address, final CallbackListener listener) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(address);
-                    HttpResponse httpResponse = httpClient.execute(httpGet);
-                    if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                        // 请求和响应都成功
-                        HttpEntity entity = httpResponse.getEntity();
-                        String response = EntityUtils.toString(entity,"utf-8");
-                        //Gson解析服务器发过来的数据
-                        Log.d("data from the server：",response);
 
     public static Map convertToMapWithJSON(String response) throws JSONException {
         JSONObject jsonObject = new JSONObject(response);

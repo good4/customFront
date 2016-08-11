@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AddActivity extends AppCompatActivity implements View.OnClickListener{
-    private static final String baseUrl="http://192.168.1.101:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
+    private static final String baseUrl="http://192.168.1.104:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
     public static final String TAG = "AddActivity";
     private List<AddCustom> addData;
     private AddCustomAdapter addCustomAdapter;
@@ -66,7 +66,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private String re_category="效率";
     private int pos=0;
     //假设已经将用户名得到
-    private String userName="shizhan";
+   // private String userName="shizhan";
+    private String userName;
     private String userId="1";
     //请求参数
     private static String parameter="";
@@ -76,6 +77,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        //得到MainActivity中的userName
+        Intent intent0=getIntent();
+        userName=intent0.getStringExtra("user_name");
+        Log.i("AddActivity",userName);
+
         if(savedInstanceState!=null){
             ((EditText)findViewById(R.id.name)).setText(savedInstanceState.getString("customName"));
             ((EditText)findViewById(R.id.day)).setText(savedInstanceState.getString("insistDay"));

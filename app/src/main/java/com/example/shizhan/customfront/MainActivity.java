@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private String category;
     private Custom custom=null;
 
+    private static String user_name;
+
     private static final int MSG_SET_ALIAS = 1001;
     private static final int MSG_SET_TAGS = 1002;
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         super.onCreate(savedInstanceState);
         //this.getSupportActionBar().hide();//隐藏标题栏，API版本24
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);//API版本21
+        //得到LoginActivity中的用户名
+
         setContentView(R.layout.activity_main);
         Log.i(TAG,"onCreate");
 
@@ -65,8 +69,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         rb_channel = (RadioButton) findViewById(R.id.rb_custom);
         rb_channel.setChecked(true);
 
+        Intent intent=getIntent();
+        user_name=intent.getStringExtra("user_name");
+        Log.i("user_name",user_name);
+
         //调用JPush API设置Alias 用户名
-        String alias="shizhan";
+//        String alias="shizhan";
+        String alias=user_name;
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
     }
 
@@ -77,7 +86,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         switch (checkedId){
             case R.id.rb_custom:
                 if(main_fg == null){
+                    Bundle bundle=new Bundle();
+                    bundle.putString("user_name",user_name);
                     main_fg = new MainFragment();
+                    main_fg.setArguments(bundle);
                     fTransaction.add(R.id.ly_content,main_fg);
                 }else{
                     fTransaction.show(main_fg);
@@ -87,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 //                开启新的活动
                 Log.d("in add","in add");
                 Intent intent=new Intent(MainActivity.this,AddActivity.class);
+                intent.putExtra("user_name",user_name);
                 startActivityForResult(intent,MainActivity);
                 break;
             case R.id.rb_my:

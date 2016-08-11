@@ -64,7 +64,8 @@ public class MainFragment extends Fragment {
     private Map<String,String> category=new HashMap<>();
 
     //userName应该由Activity传给Fragment
-    private String userName = "shizhan";
+   // private String userName = "shizhan";
+    private String userName;
     private int pos_longClick = -1;
     private int pos_shortClick = -1;
     private String new_target_day;
@@ -72,7 +73,7 @@ public class MainFragment extends Fragment {
 
     //通过查询得到userID,share
     public static Long userId;
-    private static final String baseUrl = "http://192.168.1.101:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
+    private static final String baseUrl = "http://192.168.1.104:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
     private static String parameter = "";
 
     //OSS init
@@ -106,6 +107,11 @@ public class MainFragment extends Fragment {
         category.put("学习","image/learn.png");
         category.put("运动","image/exercise.png");
         category.put("生活","image/life.png");
+
+        //保存MainActivity中的user_name
+        Bundle bundle=getArguments();
+        userName=bundle.getString("user_name");
+        //Log.("MainFragment",userName);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.custom_toolbar);
         //ToolBar默认显示项目名，这里不显示ToolBar默认的

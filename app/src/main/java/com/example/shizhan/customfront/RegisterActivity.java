@@ -204,9 +204,9 @@ public class RegisterActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         Map<String, Object> map = new HashMap<String, Object>();
                         map = gson.fromJson(response, Map.class);
-                        Toast.makeText(RegisterActivity.this,"Register"+((String) map.get("message")) , Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(RegisterActivity.this,"Register"+((String) map.get("message")) , Toast.LENGTH_SHORT).show();
                         if (!((String) map.get("message")).equals("success")) {
-                            Toast.makeText(RegisterActivity.this, "对不起，您失败了", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(RegisterActivity.this, "对不起，您失败了", Toast.LENGTH_LONG).show();
                             AppInfo.setUser(null);
                         } else {
                             User user = new User();

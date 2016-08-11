@@ -15,5 +15,5 @@ public static User mUser=null;
         mUser=user;
     }
     //IP地址
-    public static  String BASE_URL="http://192.168.1.103:8080/";
+    public static  String BASE_URL="http://192.168.1.104:8080/";
 }
