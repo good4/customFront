@@ -18,7 +18,6 @@ import com.example.shizhan.customfront.calendar.CalendarViewAdapter;
 import com.example.shizhan.customfront.calendar.Custom;
 import com.example.shizhan.customfront.calendar.CustomDate;
 import com.example.shizhan.customfront.calendar.DateUtil;
-import com.example.shizhan.customfront.model.Record;
 import com.example.shizhan.customfront.model.RecordDate;
 import com.example.shizhan.customfront.util.HttpCallbackListener;
 import com.example.shizhan.customfront.util.HttpUtil;
@@ -33,35 +32,32 @@ import java.util.List;
 import java.util.Map;
 import android.os.Handler;
 
-import android.widget.ListView;
-
-
 /**
  * Created by candy on 2016/8/1.
  */
 public class show_custom extends Activity implements CalendarCard.OnCellClickListener{
     //layout_id
     private TextView toolbar_title;//习惯名称
-    private TextView data1;//目前连续天数
-    private TextView data2;//最大连续天数
-    private TextView data3;//已完成天数
-    private TextView data4;//目标天数
+    private TextView data1;//已完成天数
+    private TextView data2;//目标天数
+    private TextView data3;//目前连续天数
+    private TextView data4;//最大连续天数
     private Button  btn_share;//
     private Handler handler;
     private static final int SELECT_RECORDS=1;
     //数据库
     private int CustomId;
     private List<RecordDate> cData=new LinkedList<RecordDate>();//已打卡日期列表
-    private static final String baseUrl="http://192.168.1.101:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
+    private static final String baseUrl="http://192.168.1.103:8080/";//IP地址会变化！！！出现无法访问服务器的情况！！！
     private static String parameter="";
     private String today;
     private String yesterday;
     private Map<String,String> new_record;
     //活动传递参数
-    private int currentInsistDay ;
-    private int maxInsistDay;
     private int insistDay;
     private int targetDay;
+    private int currentInsistDay ;
+    private int maxInsistDay;
     private String clock_in;
     //日历列表
     private ViewPager mViewPager;
@@ -80,14 +76,6 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Date dNow = new Date();   //当前时间
-        Date dBefore = new Date();
-        Calendar calendar = Calendar.getInstance(); //得到日历
-        calendar.setTime(dNow);//把当前时间赋给日历
-        calendar.add(Calendar.DAY_OF_MONTH, -1);  //设置为前一天
-        dBefore = calendar.getTime();   //得到前一天的时间
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        today=sdf.format(dNow);
 //        this.getSupportActionBar().hide();
         setContentView(R.layout.show_custom);
         handler= new Handler() {
@@ -98,17 +86,11 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                         RecordDate r = cData.get(i);
                         String date = r.getDate();
                         int year = Integer.parseInt(date.substring(0,4));
-//                    System.out.println("year:"+year);
                         int month = Integer.parseInt(date.substring(6,7));
                         int day = Integer.parseInt(date.substring(9,10));
-//                    System.out.println("year:"+day);
                         Custom custom = new Custom(year,month,day);
                         listDay.add(custom);
                     }
-//        for (int i = 1;i<5;i++){
-//            Custom custom = new Custom(2016,7+i,i);
-//            listDay.add(custom);
-//        }
                     views = new CalendarCard[6];
                     for (int i = 0; i < 6; i++) {
                         views[i] = new CalendarCard(show_custom.this, show_custom.this, listDay);
@@ -116,9 +98,9 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                    adapter = new CalendarViewAdapter<>(views);
                     // setViewPager();
                     mViewPager.setAdapter(adapter);
-//            initCategoryBarPoint(indicatorLayout);s
+//            initCategoryBarPoint(indicatorLayout);
                     mViewPager.setCurrentItem(598);
-                    System.out.println(mViewPager.getCurrentItem()+"=======222=====");
+//                    System.out.println(mViewPager.getCurrentItem()+"=======222=====");
                     mViewPager.setCurrentItem(597);
 
                     //更新currentInsistDay
@@ -132,7 +114,7 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                     today=sdf.format(dNow);
                     yesterday=sdf.format(dBefore);
                     RecordDate lastrecord = cData.get(cData.size()-1);
-                    if(lastrecord.getDate().equals(yesterday))
+                    if(!(lastrecord.getDate().equals(yesterday)))
                         currentInsistDay = 0;
                 }
             }
@@ -140,65 +122,30 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
 
         //获取MainFragment传来的数据
         Intent intent = getIntent();
-        String custom_name= intent.getStringExtra("show_custom_name");
+        final String custom_name= intent.getStringExtra("show_custom_name");
         String custom_id = intent.getStringExtra("show_custom_id");
+        String insist_day = intent.getStringExtra("show_insist_day");
+        String target_day = intent.getStringExtra("show_target_day");
         String current_insist_day = intent.getStringExtra("show_current_insist_day");
         String max_insist_day = intent.getStringExtra("show_max_insist_day");
-        final String insist_day = intent.getStringExtra("show_insist_day");
-        final String target_day = intent.getStringExtra("show_target_day");
         clock_in = intent.getStringExtra("show_clock_in");
         CustomId = Integer.parseInt(custom_id);
-        maxInsistDay = Integer.parseInt(max_insist_day);
-        currentInsistDay = Integer.parseInt(current_insist_day);//当前连续天数
         insistDay = Integer.parseInt(insist_day);
         targetDay = Integer.parseInt(target_day);
-        //传给layout
+        currentInsistDay = Integer.parseInt(current_insist_day);//当前连续天数
+        maxInsistDay = Integer.parseInt(max_insist_day);
+        // 传给layout
         toolbar_title =(TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(custom_name);
-        data1=(TextView) findViewById(R.id.show_current_insist_day);
+        data1=(TextView) findViewById(R.id.show_insist_day);
+        data1.setText(insist_day);
+        data2=(TextView) findViewById(R.id.show_target_day);
+        data2.setText(target_day);
+        data3=(TextView) findViewById(R.id.show_current_insist_day);
+        data3.setText(current_insist_day);
+        data4=(TextView) findViewById(R.id.show_max_insist_day);
+        data4.setText(max_insist_day);
         btn_share=(Button) findViewById(R.id.btn_share);
-        data1.setText(current_insist_day);
-        data2=(TextView) findViewById(R.id.show_max_insist_day);
-        data2.setText(max_insist_day);
-        data3=(TextView) findViewById(R.id.show_insist_day);
-        data3.setText(insist_day);
-        data4=(TextView) findViewById(R.id.show_target_day);
-        data4.setText(target_day);
-
-//        handler= new Handler() {
-//            public void handleMessage(Message message){
-//                if(message.what==SELECT_RECORDS){
-////                    初始化日历
-//                    mViewPager = (ViewPager) findViewById(R.id.vp_calendar);
-//                    monthText = (TextView) findViewById(R.id.tvCurrentMonth);
-//                    indicatorLayout = (LinearLayout) findViewById(R.id.layout_drop);
-//                    int month = DateUtil.getCurrentMonthNow();
-//                    int year = DateUtil.getCurrentYeatNow();
-//                    CustomDate c = new CustomDate(year, month, 1);
-//                    monthText.setText(showTimeCount(c));
-//                    initData();
-//                }
-//            }
-//        };
-//
-//        parameter1="?CustomId=" + CustomId;
-//        //发送服务器请求，查询打卡记录
-//        HttpUtil.sendRequestWithHttpClient(baseUrl +"/record", new HttpCallbackListener() {
-//            @Override
-//            public void onFinish(String response) {
-//                cData=HttpUtil.recordsJSONwithGson(response);//把数据库传过来的JSON数据转化为List<Custom>
-//                Message message=new Message();
-//                message.what=SELECT_RECORDS;
-//                message.obj=response;
-//                handler.sendMessage(message);
-//            }
-//            @Override
-//            public void onError(Exception e) {
-//                Log.d("user customs","请求服务器失败！");
-//            }
-//        });
-
-
 
         //打卡
         Button button_clockin = (Button) findViewById(R.id.clockin);
@@ -212,14 +159,12 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
             });
         }
         else {
-
             button_clockin.setBackgroundResource(R.mipmap.unclockin);
             button_clockin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(insistDay==targetDay){
                         Toast.makeText(show_custom.this, "习惯已完成", Toast.LENGTH_SHORT).show();
-
                         return;
                     }
                     if("clock_in".equals(clock_in)){
@@ -228,8 +173,8 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
 
                         Button unclockin = (Button) findViewById(R.id.clockin);
                         unclockin.setBackgroundResource(R.mipmap.clockin);
-                        currentInsistDay++;
                         insistDay++;
+                        currentInsistDay++;
                         if (currentInsistDay > maxInsistDay)
                             maxInsistDay = currentInsistDay;
                         if (insistDay == targetDay)
@@ -237,15 +182,14 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                         else
                             Toast.makeText(show_custom.this, "恭喜你，打卡成功！", Toast.LENGTH_SHORT).show();
                         clock_in = "clock_in";
-                        data1.setText(String.valueOf(currentInsistDay));
-                        data2.setText(String.valueOf(maxInsistDay));
-                        data3.setText(String.valueOf(insistDay));
-                        //?画今天的圈
+                        data1.setText(String.valueOf(insistDay));
+                        data3.setText(String.valueOf(currentInsistDay));
+                        data4.setText(String.valueOf(maxInsistDay));
+
+                        //画今天的圈
                         int year = Integer.parseInt(today.substring(0,4));
-//                    System.out.println("year:"+year);
                         int month = Integer.parseInt(today.substring(6,7));
                         int day = Integer.parseInt(today.substring(9,10));
-//                    System.out.println("year:"+day);
                         Custom custom = new Custom(year,month,day);
                         listDay.add(custom);
                         for (int i = 0; i < 6; i++) {
@@ -254,7 +198,7 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                         adapter = new CalendarViewAdapter<>(views);
                         // setViewPager();
                         mViewPager.setAdapter(adapter);
-//            initCategoryBarPoint(indicatorLayout);s
+//            initCategoryBarPoint(indicatorLayout);
                         mViewPager.setCurrentItem(598);
                         System.out.println(mViewPager.getCurrentItem()+"======123456====");
                         mViewPager.setCurrentItem(597);
@@ -266,6 +210,7 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
                         new_record.put("current_insist_day",String.valueOf(currentInsistDay));
                         new_record.put("max_insist_day",String.valueOf(maxInsistDay));
                         new_record.put("insist_day",String.valueOf(insistDay));
+                        new_record.put("is_record","1");
                          new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -305,9 +250,9 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
             public void onClick(View view) {
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "已打卡"+insistDay+"天");
-                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "changing正在监督我养成"+custom_name+"习惯，目前已经打卡"+insistDay+"天啦！小伙伴们快来一起让changing监督我们养成好的习惯吧！");
 
+                shareIntent.setType("text/plain");
                 //设置分享列表的标题，并且每次都显示分享列表
                 startActivity(Intent.createChooser(shareIntent, "分享到"));
             }
@@ -335,8 +280,6 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
     }
 
     private void initData() {
-
-
         listDay = new ArrayList<>();
         for (int i = 0; i < cData.size(); i++){
             RecordDate r = cData.get(i);
@@ -349,10 +292,6 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
             Custom custom = new Custom(year,month,day);
             listDay.add(custom);
         }
-//        for (int i = 1;i<5;i++){
-//            Custom custom = new Custom(2016,7+i,i);
-//            listDay.add(custom);
-//        }
         views = new CalendarCard[6];
         for (int i = 0; i < 6; i++) {
             views[i] = new CalendarCard(show_custom.this, show_custom.this, listDay);
@@ -360,8 +299,6 @@ public class show_custom extends Activity implements CalendarCard.OnCellClickLis
         adapter = new CalendarViewAdapter<>(views);
         setViewPager();
         CustomDate c = new CustomDate(DateUtil.getCurrentYeatNow(), DateUtil.getCurrentMonthNow(), DateUtil.getCurrentMonthDay());
-
-
 
         parameter="?CustomId=" + CustomId;
         //发送服务器请求，查询打卡记录

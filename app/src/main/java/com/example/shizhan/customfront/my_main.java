@@ -24,11 +24,11 @@ public class my_main extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 // 向后一活动传入数据
-                String custom_id = "1";
+                String custom_id = "3";
                 String custom_name = "学习";
-                String current_insist_day = "1";//当前连续天数
+                String current_insist_day = "6";//当前连续天数
                 String max_insist_day = "6";//最大连续天数
-                String insist_day = "21";//已坚持天数
+                String insist_day = "5";//已坚持天数
                 String target_day = "21";//目标天数
 //                String clock_in = "clockin";
                 String clock_in = "";

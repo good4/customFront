@@ -294,8 +294,6 @@ public class CalendarCard extends View {
 
     /**
      * 单元格元素
-     *
-     * @author wuwenjie
      */
     class Cell {
         public CustomDate date;
